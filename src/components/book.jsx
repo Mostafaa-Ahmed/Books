@@ -3,7 +3,7 @@ import { update } from "../BooksAPI";
 
 function Book({ data: book, type, getAllBooks }) {
   const updateFun = async (book, value) => {
-    const res = await update(book, value);
+    await update(book, value);
     getAllBooks && getAllBooks();
   };
 
@@ -30,13 +30,10 @@ function Book({ data: book, type, getAllBooks }) {
             onChange={(e) => updateFun(book, e.target.value)}
             defaultValue={type}
           >
-            <option value="none" disabled>
-              Move to...
-            </option>
+            <option value="none">None</option>
             <option value="currentlyReading">Currently Reading</option>
             <option value="wantToRead">Want to Read</option>
             <option value="read">Read</option>
-            <option value="none">None</option>
           </select>
         </div>
       </div>

@@ -1,18 +1,29 @@
-import { search, update } from "../BooksAPI";
+import { search } from "../BooksAPI";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Book from "../components/book";
 import { Spinner } from "reactstrap";
 
-function Search() {
+function Search({ homeBooks }) {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const searchFun = async (query, maxResults) => {
+    if (!query) {
+      setBooks([]);
+      return;
+    }
     setLoading(true);
     const books = await search(query, maxResults);
     setBooks(books);
     setLoading(false);
+  };
+
+  const isThereBook = (book) => {
+    const bookFound = Array.isArray(homeBooks)
+      ? homeBooks.filter((hb) => hb.id === book.id)
+      : [];
+    return bookFound[0];
   };
 
   return (
@@ -35,7 +46,12 @@ function Search() {
             {Array.isArray(books)
               ? books.map((book) => (
                   <li key={book.id}>
-                    <Book data={book} type={book.shelf} />
+                    <Book
+                      data={book}
+                      type={
+                        isThereBook(book) ? isThereBook(book).shelf : "none"
+                      }
+                    />
                   </li>
                 ))
               : null}
