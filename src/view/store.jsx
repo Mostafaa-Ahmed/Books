@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 import Shelf from "../components/shelf";
 
 function Store({ getAllBooks, books }) {
+  useEffect(() => {
+    getAllBooks();
+  }, []);
   return (
     <div className="app">
       <div className="list-books">
